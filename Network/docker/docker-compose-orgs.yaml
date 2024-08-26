@@ -1,0 +1,666 @@
+networks:
+    test:
+        name: fabric_test
+services:
+    buyerpeer0db:
+        container_name: buyerpeer0db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 5984:5984
+    buyerpeer1db:
+        container_name: buyerpeer1db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6004:5984
+    cli:
+        command: /bin/bash
+        container_name: cli
+        depends_on:
+            - peer0.buyer.greencredits.com
+            - peer1.buyer.greencredits.com
+            - peer0.financialinstitution.greencredits.com
+            - peer1.financialinstitution.greencredits.com
+            - peer0.government.greencredits.com
+            - peer1.government.greencredits.com
+            - peer0.issuer.greencredits.com
+            - peer1.issuer.greencredits.com
+            - peer0.verifier.greencredits.com
+            - peer1.verifier.greencredits.com
+        environment:
+            - GOPATH=/opt/gopath
+            - FABRIC_LOGGING_SPEC=INFO
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+        image: hyperledger/fabric-tools:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        stdin_open: true
+        tty: true
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
+        working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    financialinstitutionpeer0db:
+        container_name: financialinstitutionpeer0db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6024:5984
+    financialinstitutionpeer1db:
+        container_name: financialinstitutionpeer1db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6044:5984
+    governmentpeer0db:
+        container_name: governmentpeer0db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6064:5984
+    governmentpeer1db:
+        container_name: governmentpeer1db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6084:5984
+    issuerpeer0db:
+        container_name: issuerpeer0db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6104:5984
+    issuerpeer1db:
+        container_name: issuerpeer1db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6124:5984
+    orderer.greencredits.com:
+        command: orderer
+        container_name: orderer.greencredits.com
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+            - ORDERER_GENERAL_LISTENPORT=7050
+            - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+            - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+            - ORDERER_GENERAL_TLS_ENABLED=true
+            - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+            - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+            - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+            - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+            - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+            - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+            - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
+            - ORDERER_CHANNELPARTICIPATION_ENABLED=true
+            - ORDERER_ADMIN_TLS_ENABLED=true
+            - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+            - ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+            - ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+            - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+            - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7053
+            - ORDERER_OPERATIONS_LISTENADDRESS=orderer.greencredits.com:9443
+            - ORDERER_METRICS_PROVIDER=prometheus
+        image: hyperledger/fabric-orderer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7050:7050
+            - 7053:7053
+            - 9443:9443
+        volumes:
+            - ../organizations/ordererOrganizations/greencredits.com/orderers/orderer.greencredits.com/msp:/var/hyperledger/orderer/msp
+            - ../organizations/ordererOrganizations/greencredits.com/orderers/orderer.greencredits.com/tls/:/var/hyperledger/orderer/tls
+            - orderer.greencredits.com:/var/hyperledger/production/orderer
+        working_dir: /root
+    peer0.buyer.greencredits.com:
+        command: peer node start
+        container_name: peer0.buyer.greencredits.com
+        depends_on:
+            - buyerpeer0db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer0.buyer.greencredits.com
+            - CORE_PEER_ADDRESS=peer0.buyer.greencredits.com:7051
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+            - CORE_PEER_CHAINCODEADDRESS=peer0.buyer.greencredits.com:7052
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.buyer.greencredits.com:7051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.buyer.greencredits.com:7051
+            - CORE_PEER_LOCALMSPID=BuyerMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer0.buyer.greencredits.com:9444
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer0buyer'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=buyerpeer0db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7051:7051
+            - 9444:9444
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/buyer.greencredits.com/peers/peer0.buyer.greencredits.com:/etc/hyperledger/fabric
+            - peer0.buyer.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer0.financialinstitution.greencredits.com:
+        command: peer node start
+        container_name: peer0.financialinstitution.greencredits.com
+        depends_on:
+            - financialinstitutionpeer0db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer0.financialinstitution.greencredits.com
+            - CORE_PEER_ADDRESS=peer0.financialinstitution.greencredits.com:7091
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7091
+            - CORE_PEER_CHAINCODEADDRESS=peer0.financialinstitution.greencredits.com:7092
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7092
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.financialinstitution.greencredits.com:7091
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.financialinstitution.greencredits.com:7091
+            - CORE_PEER_LOCALMSPID=FinancialinstitutionMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer0.financialinstitution.greencredits.com:9446
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer0financialinstitution'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=financialinstitutionpeer0db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7091:7091
+            - 9446:9446
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/financialinstitution.greencredits.com/peers/peer0.financialinstitution.greencredits.com:/etc/hyperledger/fabric
+            - peer0.financialinstitution.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer0.government.greencredits.com:
+        command: peer node start
+        container_name: peer0.government.greencredits.com
+        depends_on:
+            - governmentpeer0db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer0.government.greencredits.com
+            - CORE_PEER_ADDRESS=peer0.government.greencredits.com:7131
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7131
+            - CORE_PEER_CHAINCODEADDRESS=peer0.government.greencredits.com:7132
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7132
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.government.greencredits.com:7131
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.government.greencredits.com:7131
+            - CORE_PEER_LOCALMSPID=GovernmentMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer0.government.greencredits.com:9448
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer0government'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=governmentpeer0db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7131:7131
+            - 9448:9448
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/government.greencredits.com/peers/peer0.government.greencredits.com:/etc/hyperledger/fabric
+            - peer0.government.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer0.issuer.greencredits.com:
+        command: peer node start
+        container_name: peer0.issuer.greencredits.com
+        depends_on:
+            - issuerpeer0db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer0.issuer.greencredits.com
+            - CORE_PEER_ADDRESS=peer0.issuer.greencredits.com:7171
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7171
+            - CORE_PEER_CHAINCODEADDRESS=peer0.issuer.greencredits.com:7172
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7172
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.issuer.greencredits.com:7171
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.issuer.greencredits.com:7171
+            - CORE_PEER_LOCALMSPID=IssuerMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer0.issuer.greencredits.com:9450
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer0issuer'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=issuerpeer0db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7171:7171
+            - 9450:9450
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/issuer.greencredits.com/peers/peer0.issuer.greencredits.com:/etc/hyperledger/fabric
+            - peer0.issuer.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer0.verifier.greencredits.com:
+        command: peer node start
+        container_name: peer0.verifier.greencredits.com
+        depends_on:
+            - verifierpeer0db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer0.verifier.greencredits.com
+            - CORE_PEER_ADDRESS=peer0.verifier.greencredits.com:7211
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7211
+            - CORE_PEER_CHAINCODEADDRESS=peer0.verifier.greencredits.com:7212
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7212
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.verifier.greencredits.com:7211
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.verifier.greencredits.com:7211
+            - CORE_PEER_LOCALMSPID=VerifierMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer0.verifier.greencredits.com:9452
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer0verifier'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=verifierpeer0db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7211:7211
+            - 9452:9452
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/verifier.greencredits.com/peers/peer0.verifier.greencredits.com:/etc/hyperledger/fabric
+            - peer0.verifier.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer1.buyer.greencredits.com:
+        command: peer node start
+        container_name: peer1.buyer.greencredits.com
+        depends_on:
+            - buyerpeer1db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer1.buyer.greencredits.com
+            - CORE_PEER_ADDRESS=peer1.buyer.greencredits.com:7071
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7071
+            - CORE_PEER_CHAINCODEADDRESS=peer1.buyer.greencredits.com:7072
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7072
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.buyer.greencredits.com:7071
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.buyer.greencredits.com:7071
+            - CORE_PEER_LOCALMSPID=BuyerMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer1.buyer.greencredits.com:9445
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer1buyer'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=buyerpeer1db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7071:7071
+            - 9445:9445
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/buyer.greencredits.com/peers/peer1.buyer.greencredits.com:/etc/hyperledger/fabric
+            - peer1.buyer.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer1.financialinstitution.greencredits.com:
+        command: peer node start
+        container_name: peer1.financialinstitution.greencredits.com
+        depends_on:
+            - financialinstitutionpeer1db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer1.financialinstitution.greencredits.com
+            - CORE_PEER_ADDRESS=peer1.financialinstitution.greencredits.com:7111
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7111
+            - CORE_PEER_CHAINCODEADDRESS=peer1.financialinstitution.greencredits.com:7112
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7112
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.financialinstitution.greencredits.com:7111
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.financialinstitution.greencredits.com:7111
+            - CORE_PEER_LOCALMSPID=FinancialinstitutionMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer1.financialinstitution.greencredits.com:9447
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer1financialinstitution'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=financialinstitutionpeer1db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7111:7111
+            - 9447:9447
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/financialinstitution.greencredits.com/peers/peer1.financialinstitution.greencredits.com:/etc/hyperledger/fabric
+            - peer1.financialinstitution.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer1.government.greencredits.com:
+        command: peer node start
+        container_name: peer1.government.greencredits.com
+        depends_on:
+            - governmentpeer1db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer1.government.greencredits.com
+            - CORE_PEER_ADDRESS=peer1.government.greencredits.com:7151
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7151
+            - CORE_PEER_CHAINCODEADDRESS=peer1.government.greencredits.com:7152
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7152
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.government.greencredits.com:7151
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.government.greencredits.com:7151
+            - CORE_PEER_LOCALMSPID=GovernmentMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer1.government.greencredits.com:9449
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer1government'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=governmentpeer1db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7151:7151
+            - 9449:9449
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/government.greencredits.com/peers/peer1.government.greencredits.com:/etc/hyperledger/fabric
+            - peer1.government.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer1.issuer.greencredits.com:
+        command: peer node start
+        container_name: peer1.issuer.greencredits.com
+        depends_on:
+            - issuerpeer1db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer1.issuer.greencredits.com
+            - CORE_PEER_ADDRESS=peer1.issuer.greencredits.com:7191
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7191
+            - CORE_PEER_CHAINCODEADDRESS=peer1.issuer.greencredits.com:7192
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7192
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.issuer.greencredits.com:7191
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.issuer.greencredits.com:7191
+            - CORE_PEER_LOCALMSPID=IssuerMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer1.issuer.greencredits.com:9451
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer1issuer'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=issuerpeer1db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7191:7191
+            - 9451:9451
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/issuer.greencredits.com/peers/peer1.issuer.greencredits.com:/etc/hyperledger/fabric
+            - peer1.issuer.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    peer1.verifier.greencredits.com:
+        command: peer node start
+        container_name: peer1.verifier.greencredits.com
+        depends_on:
+            - verifierpeer1db
+        environment:
+            - FABRIC_LOGGING_SPEC=INFO
+            - '#- FABRIC_LOGGING_SPEC=DEBUG'
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_test
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_PROFILE_ENABLED=false
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+            - '# Peer specific variables'
+            - CORE_PEER_ID=peer1.verifier.greencredits.com
+            - CORE_PEER_ADDRESS=peer1.verifier.greencredits.com:7231
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7231
+            - CORE_PEER_CHAINCODEADDRESS=peer1.verifier.greencredits.com:7232
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7232
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.verifier.greencredits.com:7231
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.verifier.greencredits.com:7231
+            - CORE_PEER_LOCALMSPID=VerifierMSP
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+            - CORE_OPERATIONS_LISTENADDRESS=peer1.verifier.greencredits.com:9453
+            - CORE_METRICS_PROVIDER=prometheus
+            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={'peername':'peer1verifier'}
+            - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=verifierpeer1db:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        image: hyperledger/fabric-peer:2.5.4
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7231:7231
+            - 9453:9453
+        volumes:
+            - /var/run/docker.sock:/host/var/run/docker.sock
+            - ../organizations/peerOrganizations/verifier.greencredits.com/peers/peer1.verifier.greencredits.com:/etc/hyperledger/fabric
+            - peer1.verifier.greencredits.com:/var/hyperledger/production
+        working_dir: /root
+    verifierpeer0db:
+        container_name: verifierpeer0db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6144:5984
+    verifierpeer1db:
+        container_name: verifierpeer1db
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        image: couchdb:3.3.2
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 6164:5984
+version: "3.7"
+volumes:
+    orderer.greencredits.com: {}
+    peer0.buyer.greencredits.com: {}
+    peer0.financialinstitution.greencredits.com: {}
+    peer0.government.greencredits.com: {}
+    peer0.issuer.greencredits.com: {}
+    peer0.verifier.greencredits.com: {}
+    peer1.buyer.greencredits.com: {}
+    peer1.financialinstitution.greencredits.com: {}
+    peer1.government.greencredits.com: {}
+    peer1.issuer.greencredits.com: {}
+    peer1.verifier.greencredits.com: {}
