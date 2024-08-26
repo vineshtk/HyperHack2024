@@ -4,6 +4,7 @@ export GOVERNMENT_PEER_TLSROOTCERT=${PWD}/organizations/peerOrganizations/govern
 export ISSUER_PEER_TLSROOTCERT=${PWD}/organizations/peerOrganizations/issuer.greencredits.com/peers/peer0.issuer.greencredits.com/tls/ca.crt
 export VERIFIER_PEER_TLSROOTCERT=${PWD}/organizations/peerOrganizations/verifier.greencredits.com/peers/peer0.verifier.greencredits.com/tls/ca.crt
 
+
 # query - balance
 peer chaincode query -C fabrixchannel -n sample-chaincode -c '{"function":"ClientAccountBalance","Args":[]}'
 
