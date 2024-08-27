@@ -62,13 +62,13 @@ func submitTxnFn(organization string, channelName string, chaincodeName string, 
 
 		// return fmt.Sprintf("*** Result:%s\n", result)
 		var result string
-		if isByteSliceEmpty(evaluateResult) {
-			result = string(evaluateResult)
-		} else {
-			result = formatJSON(evaluateResult)
-		}
+		// if isByteSliceEmpty(evaluateResult) {
+		result = string(evaluateResult)
+		// } else {
+		// 	result = formatJSON(evaluateResult)
+		// }
 
-		// return fmt.Sprintf("*** Result:%s\n", result)
+		fmt.Printf("*** Result:%s\n", result)
 		return result
 
 	case "private":
