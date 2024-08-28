@@ -29,10 +29,15 @@ Navigate to Simple_App folder
 Access the UI at http://localhost:8000/
 
 Click on the `Login` button and then select `Login as Government Agency`. 
+
 The Government Agency has the privilege to `Initialize` the token where it can define a name, symbol and decimal values for the token. Do this initialize option only once.
+
 Click on `Mint` to mint new tokens. 
+
 Click on `Allocate` to allocate some tokens to NGO's to issue them to corporates.
+
 Login as NGO to issue the tokens to corporates.
+
 Login as Corporate to transfer the tokens to other corporates.
 
 
