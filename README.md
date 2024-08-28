@@ -40,6 +40,13 @@ Login as NGO to issue the tokens to corporates.
 
 Login as Corporate to transfer the tokens to other corporates.
 
+Stop the UI by `crtl+c` from the terminal where we are running the go application.
+
+**Stop the network**
+
+```cd GreenCredits/Network```
+
+```./stopNetwork.sh```
 
 
 
