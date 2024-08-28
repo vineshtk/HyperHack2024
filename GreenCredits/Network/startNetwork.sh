@@ -9,6 +9,8 @@ sleep 3
 
 sudo chmod -R 777 organizations/
 
+export PATH=${PWD}/bin:${PWD}:$PATH
+
 echo "------------Register and enroll the users for each organization—-----------"
 
 chmod +x registerEnroll.sh
