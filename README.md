@@ -18,4 +18,17 @@ Build the Hyperledger Fabric network and deploy the chaincode by executing the f
 
 ```./startNetwork.sh```
 
+**Run the UI**
+
+Navigate to Simple_App folder
+
+```cd GreenCredits/Simple_App```
+
+```go run .```
+
+Access the UI at http://localhost:8000/
+
+
+
+
    
