@@ -8,7 +8,6 @@ To run the application, install the following:
 
 1. Docker compose
 2. Go
-3. NodeJS, NPM
 
 **Hyperledger Fabric network**
 
