@@ -9,8 +9,6 @@ sleep 3
 
 sudo chmod -R 777 organizations/
 
-export PATH=${PWD}/bin:${PWD}:$PATH
-
 echo "------------Register and enroll the users for each organization—-----------"
 
 chmod +x registerEnroll.sh
@@ -50,12 +48,12 @@ export FABRIC_CFG_PATH=${PWD}/peercfg
 export CORE_PEER_TLS_ENABLED=true
 	
 	#Define dynamic variables
-	export ORG_NAME_DOMAIN="buyer.greencredits.com"
-	export ORG_NAME="buyer"
-	export ORG_MSP="BuyerMSP"
+	export ORG_NAME_DOMAIN="corporate1.greencredits.com"
+	export ORG_NAME="corporate1"
+	export ORG_MSP="Corporate1MSP"
 	export PEER="peer0" 
 	export PEER_PORT=7051
-	export ORG_CAP="BUYER"
+	export ORG_CAP="CORPORATE1"
 	export CORE_PEER_LOCALMSPID=${ORG_MSP} 
 	export CORE_PEER_ADDRESS=localhost:${PEER_PORT} 
 	export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt
@@ -115,12 +113,12 @@ export CORE_PEER_TLS_ENABLED=true
 
 		
 	#Define dynamic variables
-	export ORG_NAME_DOMAIN="financialinstitution.greencredits.com"
-	export ORG_NAME="financialinstitution"
-	export ORG_MSP="FinancialinstitutionMSP"
+	export ORG_NAME_DOMAIN="corporate2.greencredits.com"
+	export ORG_NAME="corporate2"
+	export ORG_MSP="Corporate2MSP"
 	export PEER="peer0" 
-	export PEER_PORT=7091
-	export ORG_CAP="FINANCIALINSTITUTION"
+	export PEER_PORT=7071
+	export ORG_CAP="CORPORATE2"
 	export CORE_PEER_LOCALMSPID=${ORG_MSP} 
 	export CORE_PEER_ADDRESS=localhost:${PEER_PORT} 
 	export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt
@@ -184,7 +182,7 @@ export CORE_PEER_TLS_ENABLED=true
 	export ORG_NAME="government"
 	export ORG_MSP="GovernmentMSP"
 	export PEER="peer0" 
-	export PEER_PORT=7131
+	export PEER_PORT=7091
 	export ORG_CAP="GOVERNMENT"
 	export CORE_PEER_LOCALMSPID=${ORG_MSP} 
 	export CORE_PEER_ADDRESS=localhost:${PEER_PORT} 
@@ -245,12 +243,12 @@ export CORE_PEER_TLS_ENABLED=true
 
 		
 	#Define dynamic variables
-	export ORG_NAME_DOMAIN="issuer.greencredits.com"
-	export ORG_NAME="issuer"
-	export ORG_MSP="IssuerMSP"
+	export ORG_NAME_DOMAIN="ngo1.greencredits.com"
+	export ORG_NAME="ngo1"
+	export ORG_MSP="Ngo1MSP"
 	export PEER="peer0" 
-	export PEER_PORT=7171
-	export ORG_CAP="ISSUER"
+	export PEER_PORT=7111
+	export ORG_CAP="NGO1"
 	export CORE_PEER_LOCALMSPID=${ORG_MSP} 
 	export CORE_PEER_ADDRESS=localhost:${PEER_PORT} 
 	export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt
@@ -310,12 +308,12 @@ export CORE_PEER_TLS_ENABLED=true
 
 		
 	#Define dynamic variables
-	export ORG_NAME_DOMAIN="verifier.greencredits.com"
-	export ORG_NAME="verifier"
-	export ORG_MSP="VerifierMSP"
+	export ORG_NAME_DOMAIN="ngo2.greencredits.com"
+	export ORG_NAME="ngo2"
+	export ORG_MSP="Ngo2MSP"
 	export PEER="peer0" 
-	export PEER_PORT=7211
-	export ORG_CAP="VERIFIER"
+	export PEER_PORT=7131
+	export ORG_CAP="NGO2"
 	export CORE_PEER_LOCALMSPID=${ORG_MSP} 
 	export CORE_PEER_ADDRESS=localhost:${PEER_PORT} 
 	export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt
@@ -376,7 +374,7 @@ export CORE_PEER_TLS_ENABLED=true
 		
 	echo "—---------------Commit chaincode —-------------"
 	peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name sample-chaincode --version 1.0 --sequence 1 --collections-config ../Chaincode/collection.json --tls --cafile $ORDERER_CA --output json
-	peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.${DOMAIN_NAME} --channelID $CHANNEL_NAME --name sample-chaincode --version 1.0 --sequence 1 --collections-config ../Chaincode/collection.json --tls --cafile $ORDERER_CA --peerAddresses localhost:7051 --tlsRootCertFiles $BUYER_PEER_TLSROOTCERT  --peerAddresses localhost:7091 --tlsRootCertFiles $FINANCIALINSTITUTION_PEER_TLSROOTCERT  --peerAddresses localhost:7131 --tlsRootCertFiles $GOVERNMENT_PEER_TLSROOTCERT  --peerAddresses localhost:7171 --tlsRootCertFiles $ISSUER_PEER_TLSROOTCERT  --peerAddresses localhost:7211 --tlsRootCertFiles $VERIFIER_PEER_TLSROOTCERT
+	peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.${DOMAIN_NAME} --channelID $CHANNEL_NAME --name sample-chaincode --version 1.0 --sequence 1 --collections-config ../Chaincode/collection.json --tls --cafile $ORDERER_CA --peerAddresses localhost:7051 --tlsRootCertFiles $CORPORATE1_PEER_TLSROOTCERT  --peerAddresses localhost:7071 --tlsRootCertFiles $CORPORATE2_PEER_TLSROOTCERT  --peerAddresses localhost:7091 --tlsRootCertFiles $GOVERNMENT_PEER_TLSROOTCERT  --peerAddresses localhost:7111 --tlsRootCertFiles $NGO1_PEER_TLSROOTCERT  --peerAddresses localhost:7131 --tlsRootCertFiles $NGO2_PEER_TLSROOTCERT
 	sleep 1
 	peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name sample-chaincode --cafile $ORDERER_CA
 

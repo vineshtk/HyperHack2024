@@ -10,7 +10,7 @@ import (
 type Token struct {
 	Name     string `json:"name"`
 	Symbol   string `json:"symbol"`
-	Decimals string `json:"decimal"`
+	Decimals string `json:"decimals"`
 }
 
 type Mint struct {
@@ -26,6 +26,12 @@ type Approve struct {
 	Spender string `json:"spender"`
 	Value   string `json:"value"`
 }
+
+const MINTER = "eDUwOTo6Q049Z292ZXJubWVudGFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT"
+const NGO1 = "eDUwOTo6Q049bmdvMWFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT"
+const NGO2 = "eDUwOTo6Q049bmdvMmFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT"
+const CORPORATE1 = "eDUwOTo6Q049Y29ycG9yYXRlMWFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT"
+const CORPORATE2 = "eDUwOTo6Q049Y29ycG9yYXRlMmFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT"
 
 func main() {
 
@@ -65,7 +71,7 @@ func main() {
 			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 			return
 		}
-		fmt.Println("reqqq", req)
+		// fmt.Println("reqqq", req)
 		result := submitTxnFn(
 			"government",
 			"fabrixchannel",
@@ -79,28 +85,129 @@ func main() {
 		ctx.JSON(http.StatusOK, gin.H{"message": "minted greenCredits", "result": result})
 	})
 
-	router.POST("/api/transfer", func(ctx *gin.Context) {
+	router.POST("/api/ngo1/transfer", func(ctx *gin.Context) {
 		var req Transfer
 		if err := ctx.BindJSON(&req); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 			return
 		}
 
-		fmt.Println("request", req)
+		if req.Recipient == "Corporate1" {
+			req.Recipient = CORPORATE1
+		}
+
+		if req.Recipient == "Corporate2" {
+			req.Recipient = CORPORATE2
+		}
+
+		// fmt.Println("request", req)
 		result := submitTxnFn(
-			"issuer",
+			"ngo1",
 			"fabrixchannel",
 			"sample-chaincode",
 			"SmartContract",
 			"invoke",
 			make(map[string][]byte),
 			"TransferFrom",
-			"eDUwOTo6Q049Z292ZXJubWVudGFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT",
+			MINTER,
 			req.Recipient,
 			req.Amount,
 		)
-		ctx.JSON(http.StatusOK, gin.H{"message": "minted greenCredits", "result": result})
+		ctx.JSON(http.StatusOK, gin.H{"message": "transfered greenCredits", "result": result})
 	})
+
+	router.POST("/api/ngo2/transfer", func(ctx *gin.Context) {
+		var req Transfer
+		if err := ctx.BindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+			return
+		}
+
+		if req.Recipient == "Corporate1" {
+			req.Recipient = CORPORATE1
+		}
+
+		if req.Recipient == "Corporate2" {
+			req.Recipient = CORPORATE2
+		}
+
+		// fmt.Println("request", req)
+		result := submitTxnFn(
+			"ngo2",
+			"fabrixchannel",
+			"sample-chaincode",
+			"SmartContract",
+			"invoke",
+			make(map[string][]byte),
+			"TransferFrom",
+			MINTER,
+			req.Recipient,
+			req.Amount,
+		)
+		ctx.JSON(http.StatusOK, gin.H{"message": "transfered greenCredits", "result": result})
+	})
+
+	router.POST("/api/corporate1/transfer", func(ctx *gin.Context) {
+		var req Transfer
+		if err := ctx.BindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+			return
+		}
+
+		if req.Recipient == "Corporate1" {
+			req.Recipient = CORPORATE1
+		}
+
+		if req.Recipient == "Corporate2" {
+			req.Recipient = CORPORATE2
+		}
+
+		// fmt.Println("request", req)
+		result := submitTxnFn(
+			"corporate1",
+			"fabrixchannel",
+			"sample-chaincode",
+			"SmartContract",
+			"invoke",
+			make(map[string][]byte),
+			"Transfer",
+			req.Recipient,
+			req.Amount,
+		)
+		ctx.JSON(http.StatusOK, gin.H{"message": "transfered greenCredits", "result": result})
+	})
+
+
+	router.POST("/api/corporate2/transfer", func(ctx *gin.Context) {
+		var req Transfer
+		if err := ctx.BindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+			return
+		}
+
+		if req.Recipient == "Corporate1" {
+			req.Recipient = CORPORATE1
+		}
+
+		if req.Recipient == "Corporate2" {
+			req.Recipient = CORPORATE2
+		}
+
+		// fmt.Println("request", req)
+		result := submitTxnFn(
+			"corporate2",
+			"fabrixchannel",
+			"sample-chaincode",
+			"SmartContract",
+			"invoke",
+			make(map[string][]byte),
+			"Transfer",
+			req.Recipient,
+			req.Amount,
+		)
+		ctx.JSON(http.StatusOK, gin.H{"message": "transfered greenCredits", "result": result})
+	})
+
 
 	router.POST("/api/approve", func(ctx *gin.Context) {
 		var req Approve
@@ -110,11 +217,11 @@ func main() {
 		}
 
 		if req.Spender == "NGO1" {
-			req.Spender = "eDUwOTo6Q049aXNzdWVyYWRtaW4sT1U9YWRtaW4sTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVTOjpDTj1mYWJyaWMtY2Etc2VydmVyLE9VPUZhYnJpYyxPPUh5cGVybGVkZ2VyLFNUPU5vcnRoIENhcm9saW5hLEM9VVM="
+			req.Spender = NGO1
 		}
 
 		if req.Spender == "NGO2" {
-			req.Spender = "eDUwOTo6Q049YnV5ZXJhZG1pbixPVT1hZG1pbixPPUh5cGVybGVkZ2VyLFNUPU5vcnRoIENhcm9saW5hLEM9VVM6OkNOPWZhYnJpYy1jYS1zZXJ2ZXIsT1U9RmFicmljLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUw=="
+			req.Spender = NGO2
 		}
 
 		fmt.Println("request", req)
@@ -134,45 +241,37 @@ func main() {
 
 	router.GET("/api/clientId", func(ctx *gin.Context) {
 
-		result := submitTxnFn("government",
+		result := submitTxnFn(
+			"corporate2",
 			"fabrixchannel",
 			"sample-chaincode",
 			"SmartContract", "query", make(map[string][]byte), "ClientAccountID")
 		ctx.JSON(http.StatusOK, gin.H{"data": result})
 	})
 
-	router.GET("/api/balance", func(ctx *gin.Context) {
-
-		result := submitTxnFn(
-			"buyer",
-			"fabrixchannel",
-			"sample-chaincode",
-			"SmartContract", "query", make(map[string][]byte), "ClientAccountBalance")
-		ctx.JSON(http.StatusOK, gin.H{"data": result})
-	})
 
 	router.GET("/api/ngo1/allowance", func(ctx *gin.Context) {
 
 		result := submitTxnFn(
-			"buyer",
+			"ngo1",
 			"fabrixchannel",
 			"sample-chaincode",
-			"SmartContract", "query", make(map[string][]byte), "Allowance", "eDUwOTo6Q049Z292ZXJubWVudGFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT", "eDUwOTo6Q049aXNzdWVyYWRtaW4sT1U9YWRtaW4sTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVTOjpDTj1mYWJyaWMtY2Etc2VydmVyLE9VPUZhYnJpYyxPPUh5cGVybGVkZ2VyLFNUPU5vcnRoIENhcm9saW5hLEM9VVM=")
+			"SmartContract", "query", make(map[string][]byte), "Allowance", MINTER, NGO1)
 		ctx.JSON(http.StatusOK, gin.H{"data": result})
 	})
 
 	router.GET("/api/ngo2/allowance", func(ctx *gin.Context) {
 
 		result := submitTxnFn(
-			"buyer",
+			"ngo2",
 			"fabrixchannel",
 			"sample-chaincode",
-			"SmartContract", "query", make(map[string][]byte), "Allowance", "eDUwOTo6Q049Z292ZXJubWVudGFkbWluLE9VPWFkbWluLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUzo6Q049ZmFicmljLWNhLXNlcnZlcixPVT1GYWJyaWMsTz1IeXBlcmxlZGdlcixTVD1Ob3J0aCBDYXJvbGluYSxDPVVT", "eDUwOTo6Q049YnV5ZXJhZG1pbixPVT1hZG1pbixPPUh5cGVybGVkZ2VyLFNUPU5vcnRoIENhcm9saW5hLEM9VVM6OkNOPWZhYnJpYy1jYS1zZXJ2ZXIsT1U9RmFicmljLE89SHlwZXJsZWRnZXIsU1Q9Tm9ydGggQ2Fyb2xpbmEsQz1VUw==")
+			"SmartContract", "query", make(map[string][]byte), "Allowance", MINTER, NGO2)
 		ctx.JSON(http.StatusOK, gin.H{"data": result})
 	})
 
-	router.GET("/api/totalsupply", func(ctx *gin.Context) {
 
+	router.GET("/api/totalsupply", func(ctx *gin.Context) {
 		result := submitTxnFn("government",
 			"fabrixchannel",
 			"sample-chaincode",
@@ -180,12 +279,21 @@ func main() {
 		ctx.JSON(http.StatusOK, gin.H{"data": result})
 	})
 
-	router.GET("/api/balanceof", func(ctx *gin.Context) {
 
-		result := submitTxnFn("issuer",
+	router.GET("/api/corporate1/balance", func(ctx *gin.Context) {
+		result := submitTxnFn("corporate1",
 			"fabrixchannel",
 			"sample-chaincode",
-			"SmartContract", "query", make(map[string][]byte), "BalanceOf", "dfgsgsDG")
+			"SmartContract", "query", make(map[string][]byte), "ClientAccountBalance")
+		ctx.JSON(http.StatusOK, gin.H{"data": result})
+	})
+
+
+	router.GET("/api/corporate2/balance", func(ctx *gin.Context) {
+		result := submitTxnFn("corporate2",
+			"fabrixchannel",
+			"sample-chaincode",
+			"SmartContract", "query", make(map[string][]byte), "ClientAccountBalance")
 		ctx.JSON(http.StatusOK, gin.H{"data": result})
 	})
 

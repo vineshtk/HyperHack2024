@@ -18,6 +18,7 @@ func submitTxnFn(organization string, channelName string, chaincodeName string, 
 	gatewayPeer := orgProfile.GatewayPeer
 	peerEndpoint := orgProfile.PeerEndpoint
 
+	fmt.Println("mspid, certpath", mspID, certPath)
 	// The gRPC client connection should be shared by all Gateway connections to this endpoint
 	clientConnection := newGrpcConnection(tlsCertPath, gatewayPeer, peerEndpoint)
 	defer clientConnection.Close()

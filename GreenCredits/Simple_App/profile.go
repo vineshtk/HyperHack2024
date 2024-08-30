@@ -17,44 +17,44 @@ var profile = map[string]Config{
 		CertPath:     "../Network/organizations/peerOrganizations/government.greencredits.com/users/Admin@government.greencredits.com/msp/signcerts/cert.pem",
 		KeyDirectory: "../Network/organizations/peerOrganizations/government.greencredits.com/users/Admin@government.greencredits.com/msp/keystore/",
 		TLSCertPath:  "../Network/organizations/peerOrganizations/government.greencredits.com/peers/peer0.government.greencredits.com/tls/ca.crt",
-		PeerEndpoint: "localhost:7131",
+		PeerEndpoint: "localhost:7091",
 		GatewayPeer:  "peer0.government.greencredits.com",
 		MSPID:        "GovernmentMSP",
 	},
 
-	"verifier": {
-		CertPath:     "../Network/organizations/peerOrganizations/verifier.greencredits.com/users/Admin@verifier.greencredits.com/msp/signcerts/cert.pem",
-		KeyDirectory: "../Network/organizations/peerOrganizations/verifier.greencredits.com/users/Admin@verifier.greencredits.com/msp/keystore/",
-		TLSCertPath:  "../Network/organizations/peerOrganizations/verifier.greencredits.com/peers/peer0.verifier.greencredits.com/tls/ca.crt",
-		PeerEndpoint: "localhost:7211",
-		GatewayPeer:  "peer0.verifier.greencredits.com",
-		MSPID:        "VerifierMSP",
+	"ngo1": {
+		CertPath:     "../Network/organizations/peerOrganizations/ngo1.greencredits.com/users/Admin@ngo1.greencredits.com/msp/signcerts/cert.pem",
+		KeyDirectory: "../Network/organizations/peerOrganizations/ngo1.greencredits.com/users/Admin@ngo1.greencredits.com/msp/keystore/",
+		TLSCertPath:  "../Network/organizations/peerOrganizations/ngo1.greencredits.com/peers/peer0.ngo1.greencredits.com/tls/ca.crt",
+		PeerEndpoint: "localhost:7111",
+		GatewayPeer:  "peer0.ngo1.greencredits.com",
+		MSPID:        "Ngo1MSP",
 	},
 
-	"issuer": {
-		CertPath:     "../Network/organizations/peerOrganizations/issuer.greencredits.com/users/Admin@issuer.greencredits.com/msp/signcerts/cert.pem",
-		KeyDirectory: "../Network/organizations/peerOrganizations/issuer.greencredits.com/users/Admin@issuer.greencredits.com/msp/keystore/",
-		TLSCertPath:  "../Network/organizations/peerOrganizations/issuer.greencredits.com/peers/peer0.issuer.greencredits.com/tls/ca.crt",
-		PeerEndpoint: "localhost:7171",
-		GatewayPeer:  "peer0.issuer.greencredits.com",
-		MSPID:        "IssuerMSP",
+	"ngo2": {
+		CertPath:     "../Network/organizations/peerOrganizations/ngo2.greencredits.com/users/Admin@ngo2.greencredits.com/msp/signcerts/cert.pem",
+		KeyDirectory: "../Network/organizations/peerOrganizations/ngo2.greencredits.com/users/Admin@ngo2.greencredits.com/msp/keystore/",
+		TLSCertPath:  "../Network/organizations/peerOrganizations/ngo2.greencredits.com/peers/peer0.ngo2.greencredits.com/tls/ca.crt",
+		PeerEndpoint: "localhost:7131",
+		GatewayPeer:  "peer0.ngo2.greencredits.com",
+		MSPID:        "Ngo2MSP",
 	},
 
-	"buyer": {
-		CertPath:     "../Network/organizations/peerOrganizations/buyer.greencredits.com/users/Admin@buyer.greencredits.com/msp/signcerts/cert.pem",
-		KeyDirectory: "../Network/organizations/peerOrganizations/buyer.greencredits.com/users/Admin@buyer.greencredits.com/msp/keystore/",
-		TLSCertPath:  "../Network/organizations/peerOrganizations/buyer.greencredits.com/peers/peer0.buyer.greencredits.com/tls/ca.crt",
+	"corporate1": {
+		CertPath:     "../Network/organizations/peerOrganizations/corporate1.greencredits.com/users/Admin@corporate1.greencredits.com/msp/signcerts/cert.pem",
+		KeyDirectory: "../Network/organizations/peerOrganizations/corporate1.greencredits.com/users/Admin@corporate1.greencredits.com/msp/keystore/",
+		TLSCertPath:  "../Network/organizations/peerOrganizations/corporate1.greencredits.com/peers/peer0.corporate1.greencredits.com/tls/ca.crt",
 		PeerEndpoint: "localhost:7051",
-		GatewayPeer:  "peer0.buyer.greencredits.com",
-		MSPID:        "BuyerMSP",
+		GatewayPeer:  "peer0.corporate1.greencredits.com",
+		MSPID:        "Corporate1MSP",
 	},
 
-	"financialinstitution": {
-		CertPath:     "../Network/organizations/peerOrganizations/financialinstitution.greencredits.com/users/Admin@financialinstitution.greencredits.com/msp/signcerts/cert.pem",
-		KeyDirectory: "../Network/organizations/peerOrganizations/financialinstitution.greencredits.com/users/Admin@financialinstitution.greencredits.com/msp/keystore/",
-		TLSCertPath:  "../Network/organizations/peerOrganizations/financialinstitution.greencredits.com/peers/peer0.financialinstitution.greencredits.com/tls/ca.crt",
-		PeerEndpoint: "localhost:7091",
-		GatewayPeer:  "peer0.financialinstitution.greencredits.com",
-		MSPID:        "FinancialinstitutionMSP",
+	"corporate2": {
+		CertPath:     "../Network/organizations/peerOrganizations/corporate2.greencredits.com/users/Admin@corporate2.greencredits.com/msp/signcerts/cert.pem",
+		KeyDirectory: "../Network/organizations/peerOrganizations/corporate2.greencredits.com/users/Admin@corporate2.greencredits.com/msp/keystore/",
+		TLSCertPath:  "../Network/organizations/peerOrganizations/corporate2.greencredits.com/peers/peer0.corporate2.greencredits.com/tls/ca.crt",
+		PeerEndpoint: "localhost:7071",
+		GatewayPeer:  "peer0.corporate2.greencredits.com",
+		MSPID:        "Corporate2MSP",
 	},
 }

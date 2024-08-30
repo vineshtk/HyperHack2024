@@ -81,70 +81,6 @@ organizations:
             Rule: OR('OrdererMSP.member')
       OrdererEndpoints:
         - orderer.greencredits.com:7050
-    - Name: IssuerMSP
-      ID: IssuerMSP
-      MSPDir: ../organizations/peerOrganizations/issuer.greencredits.com/msp
-      Policies:
-        Readers:
-            Type: Signature
-            Rule: OR('IssuerMSP.admin', 'IssuerMSP.peer', 'IssuerMSP.client')
-        Writers:
-            Type: Signature
-            Rule: OR('IssuerMSP.admin','IssuerMSP.client')
-        Admins:
-            Type: Signature
-            Rule: OR('IssuerMSP.admin')
-        Endorsement:
-            Type: Signature
-            Rule: OR('IssuerMSP.peer')
-    - Name: BuyerMSP
-      ID: BuyerMSP
-      MSPDir: ../organizations/peerOrganizations/buyer.greencredits.com/msp
-      Policies:
-        Readers:
-            Type: Signature
-            Rule: OR('BuyerMSP.admin', 'BuyerMSP.peer', 'BuyerMSP.client')
-        Writers:
-            Type: Signature
-            Rule: OR('BuyerMSP.admin','BuyerMSP.client')
-        Admins:
-            Type: Signature
-            Rule: OR('BuyerMSP.admin')
-        Endorsement:
-            Type: Signature
-            Rule: OR('BuyerMSP.peer')
-    - Name: VerifierMSP
-      ID: VerifierMSP
-      MSPDir: ../organizations/peerOrganizations/verifier.greencredits.com/msp
-      Policies:
-        Readers:
-            Type: Signature
-            Rule: OR('VerifierMSP.admin', 'VerifierMSP.peer', 'VerifierMSP.client')
-        Writers:
-            Type: Signature
-            Rule: OR('VerifierMSP.admin','VerifierMSP.client')
-        Admins:
-            Type: Signature
-            Rule: OR('VerifierMSP.admin')
-        Endorsement:
-            Type: Signature
-            Rule: OR('VerifierMSP.peer')
-    - Name: FinancialinstitutionMSP
-      ID: FinancialinstitutionMSP
-      MSPDir: ../organizations/peerOrganizations/financialinstitution.greencredits.com/msp
-      Policies:
-        Readers:
-            Type: Signature
-            Rule: OR('FinancialinstitutionMSP.admin', 'FinancialinstitutionMSP.peer', 'FinancialinstitutionMSP.client')
-        Writers:
-            Type: Signature
-            Rule: OR('FinancialinstitutionMSP.admin','FinancialinstitutionMSP.client')
-        Admins:
-            Type: Signature
-            Rule: OR('FinancialinstitutionMSP.admin')
-        Endorsement:
-            Type: Signature
-            Rule: OR('FinancialinstitutionMSP.peer')
     - Name: GovernmentMSP
       ID: GovernmentMSP
       MSPDir: ../organizations/peerOrganizations/government.greencredits.com/msp
@@ -161,6 +97,70 @@ organizations:
         Endorsement:
             Type: Signature
             Rule: OR('GovernmentMSP.peer')
+    - Name: Ngo1MSP
+      ID: Ngo1MSP
+      MSPDir: ../organizations/peerOrganizations/ngo1.greencredits.com/msp
+      Policies:
+        Readers:
+            Type: Signature
+            Rule: OR('Ngo1MSP.admin', 'Ngo1MSP.peer', 'Ngo1MSP.client')
+        Writers:
+            Type: Signature
+            Rule: OR('Ngo1MSP.admin','Ngo1MSP.client')
+        Admins:
+            Type: Signature
+            Rule: OR('Ngo1MSP.admin')
+        Endorsement:
+            Type: Signature
+            Rule: OR('Ngo1MSP.peer')
+    - Name: Ngo2MSP
+      ID: Ngo2MSP
+      MSPDir: ../organizations/peerOrganizations/ngo2.greencredits.com/msp
+      Policies:
+        Readers:
+            Type: Signature
+            Rule: OR('Ngo2MSP.admin', 'Ngo2MSP.peer', 'Ngo2MSP.client')
+        Writers:
+            Type: Signature
+            Rule: OR('Ngo2MSP.admin','Ngo2MSP.client')
+        Admins:
+            Type: Signature
+            Rule: OR('Ngo2MSP.admin')
+        Endorsement:
+            Type: Signature
+            Rule: OR('Ngo2MSP.peer')
+    - Name: Corporate1MSP
+      ID: Corporate1MSP
+      MSPDir: ../organizations/peerOrganizations/corporate1.greencredits.com/msp
+      Policies:
+        Readers:
+            Type: Signature
+            Rule: OR('Corporate1MSP.admin', 'Corporate1MSP.peer', 'Corporate1MSP.client')
+        Writers:
+            Type: Signature
+            Rule: OR('Corporate1MSP.admin','Corporate1MSP.client')
+        Admins:
+            Type: Signature
+            Rule: OR('Corporate1MSP.admin')
+        Endorsement:
+            Type: Signature
+            Rule: OR('Corporate1MSP.peer')
+    - Name: Corporate2MSP
+      ID: Corporate2MSP
+      MSPDir: ../organizations/peerOrganizations/corporate2.greencredits.com/msp
+      Policies:
+        Readers:
+            Type: Signature
+            Rule: OR('Corporate2MSP.admin', 'Corporate2MSP.peer', 'Corporate2MSP.client')
+        Writers:
+            Type: Signature
+            Rule: OR('Corporate2MSP.admin','Corporate2MSP.client')
+        Admins:
+            Type: Signature
+            Rule: OR('Corporate2MSP.admin')
+        Endorsement:
+            Type: Signature
+            Rule: OR('Corporate2MSP.peer')
 profiles:
     ThreeOrgsChannel:
         <<:
@@ -205,70 +205,6 @@ profiles:
             Capabilities:
                 V2_5: true
             Organizations:
-                - Name: IssuerMSP
-                  ID: IssuerMSP
-                  MSPDir: ../organizations/peerOrganizations/issuer.greencredits.com/msp
-                  Policies:
-                    Readers:
-                        Type: Signature
-                        Rule: OR('IssuerMSP.admin', 'IssuerMSP.peer', 'IssuerMSP.client')
-                    Writers:
-                        Type: Signature
-                        Rule: OR('IssuerMSP.admin','IssuerMSP.client')
-                    Admins:
-                        Type: Signature
-                        Rule: OR('IssuerMSP.admin')
-                    Endorsement:
-                        Type: Signature
-                        Rule: OR('IssuerMSP.peer')
-                - Name: BuyerMSP
-                  ID: BuyerMSP
-                  MSPDir: ../organizations/peerOrganizations/buyer.greencredits.com/msp
-                  Policies:
-                    Readers:
-                        Type: Signature
-                        Rule: OR('BuyerMSP.admin', 'BuyerMSP.peer', 'BuyerMSP.client')
-                    Writers:
-                        Type: Signature
-                        Rule: OR('BuyerMSP.admin','BuyerMSP.client')
-                    Admins:
-                        Type: Signature
-                        Rule: OR('BuyerMSP.admin')
-                    Endorsement:
-                        Type: Signature
-                        Rule: OR('BuyerMSP.peer')
-                - Name: VerifierMSP
-                  ID: VerifierMSP
-                  MSPDir: ../organizations/peerOrganizations/verifier.greencredits.com/msp
-                  Policies:
-                    Readers:
-                        Type: Signature
-                        Rule: OR('VerifierMSP.admin', 'VerifierMSP.peer', 'VerifierMSP.client')
-                    Writers:
-                        Type: Signature
-                        Rule: OR('VerifierMSP.admin','VerifierMSP.client')
-                    Admins:
-                        Type: Signature
-                        Rule: OR('VerifierMSP.admin')
-                    Endorsement:
-                        Type: Signature
-                        Rule: OR('VerifierMSP.peer')
-                - Name: FinancialinstitutionMSP
-                  ID: FinancialinstitutionMSP
-                  MSPDir: ../organizations/peerOrganizations/financialinstitution.greencredits.com/msp
-                  Policies:
-                    Readers:
-                        Type: Signature
-                        Rule: OR('FinancialinstitutionMSP.admin', 'FinancialinstitutionMSP.peer', 'FinancialinstitutionMSP.client')
-                    Writers:
-                        Type: Signature
-                        Rule: OR('FinancialinstitutionMSP.admin','FinancialinstitutionMSP.client')
-                    Admins:
-                        Type: Signature
-                        Rule: OR('FinancialinstitutionMSP.admin')
-                    Endorsement:
-                        Type: Signature
-                        Rule: OR('FinancialinstitutionMSP.peer')
                 - Name: GovernmentMSP
                   ID: GovernmentMSP
                   MSPDir: ../organizations/peerOrganizations/government.greencredits.com/msp
@@ -285,6 +221,70 @@ profiles:
                     Endorsement:
                         Type: Signature
                         Rule: OR('GovernmentMSP.peer')
+                - Name: Ngo1MSP
+                  ID: Ngo1MSP
+                  MSPDir: ../organizations/peerOrganizations/ngo1.greencredits.com/msp
+                  Policies:
+                    Readers:
+                        Type: Signature
+                        Rule: OR('Ngo1MSP.admin', 'Ngo1MSP.peer', 'Ngo1MSP.client')
+                    Writers:
+                        Type: Signature
+                        Rule: OR('Ngo1MSP.admin','Ngo1MSP.client')
+                    Admins:
+                        Type: Signature
+                        Rule: OR('Ngo1MSP.admin')
+                    Endorsement:
+                        Type: Signature
+                        Rule: OR('Ngo1MSP.peer')
+                - Name: Ngo2MSP
+                  ID: Ngo2MSP
+                  MSPDir: ../organizations/peerOrganizations/ngo2.greencredits.com/msp
+                  Policies:
+                    Readers:
+                        Type: Signature
+                        Rule: OR('Ngo2MSP.admin', 'Ngo2MSP.peer', 'Ngo2MSP.client')
+                    Writers:
+                        Type: Signature
+                        Rule: OR('Ngo2MSP.admin','Ngo2MSP.client')
+                    Admins:
+                        Type: Signature
+                        Rule: OR('Ngo2MSP.admin')
+                    Endorsement:
+                        Type: Signature
+                        Rule: OR('Ngo2MSP.peer')
+                - Name: Corporate1MSP
+                  ID: Corporate1MSP
+                  MSPDir: ../organizations/peerOrganizations/corporate1.greencredits.com/msp
+                  Policies:
+                    Readers:
+                        Type: Signature
+                        Rule: OR('Corporate1MSP.admin', 'Corporate1MSP.peer', 'Corporate1MSP.client')
+                    Writers:
+                        Type: Signature
+                        Rule: OR('Corporate1MSP.admin','Corporate1MSP.client')
+                    Admins:
+                        Type: Signature
+                        Rule: OR('Corporate1MSP.admin')
+                    Endorsement:
+                        Type: Signature
+                        Rule: OR('Corporate1MSP.peer')
+                - Name: Corporate2MSP
+                  ID: Corporate2MSP
+                  MSPDir: ../organizations/peerOrganizations/corporate2.greencredits.com/msp
+                  Policies:
+                    Readers:
+                        Type: Signature
+                        Rule: OR('Corporate2MSP.admin', 'Corporate2MSP.peer', 'Corporate2MSP.client')
+                    Writers:
+                        Type: Signature
+                        Rule: OR('Corporate2MSP.admin','Corporate2MSP.client')
+                    Admins:
+                        Type: Signature
+                        Rule: OR('Corporate2MSP.admin')
+                    Endorsement:
+                        Type: Signature
+                        Rule: OR('Corporate2MSP.peer')
         orderer:
             <<:
                 Addresses:

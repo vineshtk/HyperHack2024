@@ -78,10 +78,10 @@ function createOrderer() {
 }
   createOrderer
   
-function createBuyerCertificates(){
+function createCorporate1Certificates(){
 	# Define dynamic variables
-	export ORG_NAME_DOMAIN="buyer.greencredits.com"
-	export ORG_NAME="buyer"
+	export ORG_NAME_DOMAIN="corporate1.greencredits.com"
+	export ORG_NAME="corporate1"
 	export CA_PORT=7064
 
 	echo "Enrolling the CA admin"
@@ -174,39 +174,12 @@ function createBuyerCertificates(){
 	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
 		
 		
-
-	# Define dynamic variables
-	export PEER="peer1"
-
-	echo "Registering ${PEER}"
-	set -x
-	fabric-ca-client register --caname ca-${ORG_NAME} --id.name ${PEER} --id.secret ${PEER}pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	echo "Generating the ${PEER} msp"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp/config.yaml"
-
-	echo "Generating the ${PEER}-tls certificates, use --csr.hosts to specify Subject Alternative Names"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls" --enrollment.profile tls --csr.hosts ${PEER}.${ORG_NAME_DOMAIN} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	# Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
-		
-		
 	}
-	createBuyerCertificates
-function createFinancialinstitutionCertificates(){
+	createCorporate1Certificates
+function createCorporate2Certificates(){
 	# Define dynamic variables
-	export ORG_NAME_DOMAIN="financialinstitution.greencredits.com"
-	export ORG_NAME="financialinstitution"
+	export ORG_NAME_DOMAIN="corporate2.greencredits.com"
+	export ORG_NAME="corporate2"
 	export CA_PORT=7074
 
 	echo "Enrolling the CA admin"
@@ -299,35 +272,8 @@ function createFinancialinstitutionCertificates(){
 	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
 		
 		
-
-	# Define dynamic variables
-	export PEER="peer1"
-
-	echo "Registering ${PEER}"
-	set -x
-	fabric-ca-client register --caname ca-${ORG_NAME} --id.name ${PEER} --id.secret ${PEER}pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	echo "Generating the ${PEER} msp"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp/config.yaml"
-
-	echo "Generating the ${PEER}-tls certificates, use --csr.hosts to specify Subject Alternative Names"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls" --enrollment.profile tls --csr.hosts ${PEER}.${ORG_NAME_DOMAIN} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	# Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
-		
-		
 	}
-	createFinancialinstitutionCertificates
+	createCorporate2Certificates
 function createGovernmentCertificates(){
 	# Define dynamic variables
 	export ORG_NAME_DOMAIN="government.greencredits.com"
@@ -424,39 +370,12 @@ function createGovernmentCertificates(){
 	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
 		
 		
-
-	# Define dynamic variables
-	export PEER="peer1"
-
-	echo "Registering ${PEER}"
-	set -x
-	fabric-ca-client register --caname ca-${ORG_NAME} --id.name ${PEER} --id.secret ${PEER}pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	echo "Generating the ${PEER} msp"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp/config.yaml"
-
-	echo "Generating the ${PEER}-tls certificates, use --csr.hosts to specify Subject Alternative Names"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls" --enrollment.profile tls --csr.hosts ${PEER}.${ORG_NAME_DOMAIN} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	# Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
-		
-		
 	}
 	createGovernmentCertificates
-function createIssuerCertificates(){
+function createNgo1Certificates(){
 	# Define dynamic variables
-	export ORG_NAME_DOMAIN="issuer.greencredits.com"
-	export ORG_NAME="issuer"
+	export ORG_NAME_DOMAIN="ngo1.greencredits.com"
+	export ORG_NAME="ngo1"
 	export CA_PORT=7094
 
 	echo "Enrolling the CA admin"
@@ -549,39 +468,12 @@ function createIssuerCertificates(){
 	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
 		
 		
-
-	# Define dynamic variables
-	export PEER="peer1"
-
-	echo "Registering ${PEER}"
-	set -x
-	fabric-ca-client register --caname ca-${ORG_NAME} --id.name ${PEER} --id.secret ${PEER}pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	echo "Generating the ${PEER} msp"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp/config.yaml"
-
-	echo "Generating the ${PEER}-tls certificates, use --csr.hosts to specify Subject Alternative Names"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls" --enrollment.profile tls --csr.hosts ${PEER}.${ORG_NAME_DOMAIN} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	# Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
-		
-		
 	}
-	createIssuerCertificates
-function createVerifierCertificates(){
+	createNgo1Certificates
+function createNgo2Certificates(){
 	# Define dynamic variables
-	export ORG_NAME_DOMAIN="verifier.greencredits.com"
-	export ORG_NAME="verifier"
+	export ORG_NAME_DOMAIN="ngo2.greencredits.com"
+	export ORG_NAME="ngo2"
 	export CA_PORT=7104
 
 	echo "Enrolling the CA admin"
@@ -674,32 +566,5 @@ function createVerifierCertificates(){
 	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
 		
 		
-
-	# Define dynamic variables
-	export PEER="peer1"
-
-	echo "Registering ${PEER}"
-	set -x
-	fabric-ca-client register --caname ca-${ORG_NAME} --id.name ${PEER} --id.secret ${PEER}pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	echo "Generating the ${PEER} msp"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/msp/config.yaml" "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/msp/config.yaml"
-
-	echo "Generating the ${PEER}-tls certificates, use --csr.hosts to specify Subject Alternative Names"
-	set -x
-	fabric-ca-client enroll -u https://${PEER}:${PEER}pw@localhost:${CA_PORT} --caname ca-${ORG_NAME} -M "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls" --enrollment.profile tls --csr.hosts ${PEER}.${ORG_NAME_DOMAIN} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG_NAME}/ca-cert.pem"
-	{ set +x; } 2>/dev/null
-
-	# Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/ca.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.crt"
-	cp "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/keystore/"* "${PWD}/organizations/peerOrganizations/${ORG_NAME_DOMAIN}/peers/${PEER}.${ORG_NAME_DOMAIN}/tls/server.key"
-		
-		
 	}
-	createVerifierCertificates
+	createNgo2Certificates

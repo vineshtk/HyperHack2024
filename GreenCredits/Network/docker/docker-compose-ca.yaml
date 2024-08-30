@@ -2,12 +2,12 @@ networks:
     test:
         name: fabric_test
 services:
-    ca_buyer:
+    ca_corporate1:
         command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
-        container_name: ca_buyer
+        container_name: ca_corporate1
         environment:
             - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-            - FABRIC_CA_SERVER_CA_NAME=ca-buyer
+            - FABRIC_CA_SERVER_CA_NAME=ca-corporate1
             - FABRIC_CA_SERVER_TLS_ENABLED=true
             - FABRIC_CA_SERVER_PORT=7064
             - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17064
@@ -20,13 +20,13 @@ services:
             - 7064:7064
             - 17064:17064
         volumes:
-            - ../organizations/fabric-ca/buyer:/etc/hyperledger/fabric-ca-server
-    ca_financialinstitution:
+            - ../organizations/fabric-ca/corporate1:/etc/hyperledger/fabric-ca-server
+    ca_corporate2:
         command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
-        container_name: ca_financialinstitution
+        container_name: ca_corporate2
         environment:
             - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-            - FABRIC_CA_SERVER_CA_NAME=ca-financialinstitution
+            - FABRIC_CA_SERVER_CA_NAME=ca-corporate2
             - FABRIC_CA_SERVER_TLS_ENABLED=true
             - FABRIC_CA_SERVER_PORT=7074
             - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17074
@@ -39,7 +39,7 @@ services:
             - 7074:7074
             - 17074:17074
         volumes:
-            - ../organizations/fabric-ca/financialinstitution:/etc/hyperledger/fabric-ca-server
+            - ../organizations/fabric-ca/corporate2:/etc/hyperledger/fabric-ca-server
     ca_government:
         command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
         container_name: ca_government
@@ -59,12 +59,12 @@ services:
             - 17084:17084
         volumes:
             - ../organizations/fabric-ca/government:/etc/hyperledger/fabric-ca-server
-    ca_issuer:
+    ca_ngo1:
         command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
-        container_name: ca_issuer
+        container_name: ca_ngo1
         environment:
             - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-            - FABRIC_CA_SERVER_CA_NAME=ca-issuer
+            - FABRIC_CA_SERVER_CA_NAME=ca-ngo1
             - FABRIC_CA_SERVER_TLS_ENABLED=true
             - FABRIC_CA_SERVER_PORT=7094
             - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17094
@@ -77,7 +77,26 @@ services:
             - 7094:7094
             - 17094:17094
         volumes:
-            - ../organizations/fabric-ca/issuer:/etc/hyperledger/fabric-ca-server
+            - ../organizations/fabric-ca/ngo1:/etc/hyperledger/fabric-ca-server
+    ca_ngo2:
+        command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+        container_name: ca_ngo2
+        environment:
+            - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+            - FABRIC_CA_SERVER_CA_NAME=ca-ngo2
+            - FABRIC_CA_SERVER_TLS_ENABLED=true
+            - FABRIC_CA_SERVER_PORT=7104
+            - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17104
+        image: hyperledger/fabric-ca:1.5.7
+        labels:
+            service: hyperledger-fabric
+        networks:
+            - test
+        ports:
+            - 7104:7104
+            - 17104:17104
+        volumes:
+            - ../organizations/fabric-ca/ngo2:/etc/hyperledger/fabric-ca-server
     ca_orderer:
         command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
         container_name: ca_orderer
@@ -97,23 +116,4 @@ services:
             - 17054:17054
         volumes:
             - ../organizations/fabric-ca/ordererOrg:/etc/hyperledger/fabric-ca-server
-    ca_verifier:
-        command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
-        container_name: ca_verifier
-        environment:
-            - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-            - FABRIC_CA_SERVER_CA_NAME=ca-verifier
-            - FABRIC_CA_SERVER_TLS_ENABLED=true
-            - FABRIC_CA_SERVER_PORT=7104
-            - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17104
-        image: hyperledger/fabric-ca:1.5.7
-        labels:
-            service: hyperledger-fabric
-        networks:
-            - test
-        ports:
-            - 7104:7104
-            - 17104:17104
-        volumes:
-            - ../organizations/fabric-ca/verifier:/etc/hyperledger/fabric-ca-server
 version: "3.7"
